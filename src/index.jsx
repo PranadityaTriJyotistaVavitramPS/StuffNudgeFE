@@ -1,7 +1,14 @@
 import React from 'react';
-import { createRoot } from 'react-dom/client';
- 
-const element = <h1>Hello, StuffNudge!</h1>;
- 
-const root = createRoot(document.getElementById('root'));
-root.render(element);
+import ReactDOM from 'react-dom/client';
+import App from './app';
+import './styles/LandingPage.css';
+
+
+
+const rootElement = document.getElementById('root');
+
+ReactDOM.createRoot(rootElement).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
