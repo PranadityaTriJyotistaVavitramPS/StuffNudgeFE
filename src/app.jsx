@@ -1,9 +1,8 @@
 import React from 'react';
-import LandingPage from './pages/LandingPage';
-import './styles/LandingPage.css';
+import Dashboard from './pages/Dashboard';
 
 function App() {
-  return <LandingPage />;
+  return <Dashboard />;
 }
 
 export default App;

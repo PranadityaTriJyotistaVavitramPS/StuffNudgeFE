@@ -1,13 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './app';
+import App from './App';
+import './styles/variables.css';
+import './styles/Dashboard.css';
 import './styles/LandingPage.css';
 
-
-
-const rootElement = document.getElementById('root');
-
-ReactDOM.createRoot(rootElement).render(
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>

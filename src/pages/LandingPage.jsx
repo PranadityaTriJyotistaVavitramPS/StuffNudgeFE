@@ -22,12 +22,13 @@ import {
 export default function LandingPage() {
   useEffect(() => {
     const selector = [
-      '.step-icon',
-      '.lp-about .about-image img',
-      '.lp-about .about-text p'
+      '.lp-about .about-text p',
+      '.lp-features h2',
+      '.lp-about h2',
+      '.lp-howto h2',
     ].join(', ');
+    
     const elems = document.querySelectorAll(selector);
-
     const observer = new IntersectionObserver(
       (entries, obs) => {
         entries.forEach(entry => {
@@ -39,7 +40,7 @@ export default function LandingPage() {
       },
       { threshold: 0.15 }
     );
-
+    
     elems.forEach(el => observer.observe(el));
     return () => observer.disconnect();
   }, []);
@@ -48,7 +49,7 @@ export default function LandingPage() {
     <div className="lp-container">
       <header className="lp-header">
         <a href="home" className="lp-logo">
-          Stuff<span>.Nudge</span>
+          Stuff<span>Nudge</span>
         </a>
         <nav className="lp-nav">
           <a href="#features">Fitur</a>

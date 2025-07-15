@@ -1,0 +1,423 @@
+@import './variables.css';
+
+/* ================================
+   GLOBAL RESET & BASE
+   ================================ */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  transition: all 0.2s ease-in-out;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-pale-gray);
+  color: var(--color-dark-blue);
+  overflow: hidden;
+}
+
+/* ================================
+   LAYOUT GRID
+   ================================ */
+.dashboard-container {
+  display: grid;
+  grid-template-columns: 240px 1fr 320px;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ================================
+   SIDEBAR NAV
+   ================================ */
+.sidebar {
+  background: var(--color-dark-blue);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1rem;
+}
+
+.sidebar .logo {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  letter-spacing: 1px;
+}
+
+.sidebar button {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  background: none;
+  border: none;
+  color: white;
+  padding: .75rem 1rem;
+  border-radius: .5rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.sidebar button:hover,
+.sidebar button.active {
+  background: var(--color-light-blue);
+  color: var(--color-pale-gray);
+}
+
+/* ================================
+   MAIN CONTENT
+   ================================ */
+.main {
+  padding: 2rem 1.5rem;
+  overflow-y: auto;
+}
+
+/* HEADER */
+.main header h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+.main header h1::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 50px;
+  height: 4px;
+  background: var(--color-light-blue);
+  border-radius: 2px;
+}
+
+/* TOP SECTION (FORM + LIST) */
+.top-section {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+/* ================================
+   ADD / EDIT FORM CARD
+   ================================ */
+.add-form {
+  flex: 1 1 300px;
+  background: white;
+  padding: 1.5rem;
+  border-radius: .75rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+}
+.add-form h3 {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+.add-form input,
+.add-form textarea {
+  margin-bottom: 1rem;
+  padding: .75rem 1rem;
+  border: 1px solid var(--color-pale-blue);
+  border-radius: .5rem;
+  font-size: 1rem;
+}
+.add-form input:focus,
+.add-form textarea:focus {
+  outline: none;
+  border-color: var(--color-light-blue);
+  box-shadow: 0 0 0 3px rgba(87,143,202,0.2);
+}
+.add-form button {
+  align-self: flex-end;
+  padding: .75rem 1.5rem;
+  border: none;
+  border-radius: .5rem;
+  background: var(--color-light-blue);
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.add-form button:hover {
+  background: var(--color-dark-blue);
+}
+
+/* ================================
+   ACTIVITY LIST CARD
+   ================================ */
+.activity-list {
+  flex: 1 1 300px;
+  background: white;
+  padding: 1rem;
+  border-radius: .75rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  max-height: calc(100vh - 250px);
+  overflow-y: auto;
+}
+.activity-list::-webkit-scrollbar {
+  width: 8px;
+}
+.activity-list::-webkit-scrollbar-thumb {
+  background: var(--color-light-blue);
+  border-radius: 4px;
+}
+
+/* ================================
+   ACTIVITY ITEM
+   ================================ */
+.activity-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: .75rem 1rem;
+  margin-bottom: .5rem;
+  background: var(--color-pale-blue);
+  border-radius: .5rem;
+  cursor: pointer;
+}
+.activity-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+.activity-item .item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.activity-item .item-name {
+  font-size: 1rem;
+  font-weight: 500;
+}
+.activity-item .item-date {
+  font-size: 0.8rem;
+  color: var(--color-dark-blue);
+  margin-top: .5rem;
+  text-align: right;
+}
+
+/* ================================
+   CALENDAR VIEW
+   ================================ */
+.calendar {
+  background: white;
+  padding: 1.5rem;
+  border-radius: .75rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  margin-bottom: 2rem;
+}
+.calendar h3 {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+.calendar table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.calendar th,
+.calendar td {
+  width: 14.28%;
+  text-align: center;
+  padding: .75rem 0;
+  cursor: pointer;
+}
+.calendar td:hover {
+  background: var(--color-pale-blue);
+  border-radius: .25rem;
+}
+.calendar .has-activity {
+  background: var(--color-light-blue);
+  color: white;
+  font-weight: 600;
+}
+
+/* ================================
+   TIMER VIEW
+   ================================ */
+.timer-page-title {
+  background: var(--color-pale-gray);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.timer-component {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.timer-blocks {
+  display: flex;
+  gap: 2rem;
+}
+
+.timer-block {
+  background: var(--color-beige);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  text-align: center;
+  min-width: 120px;
+}
+
+.timer-block .time {
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--color-dark-blue);
+}
+
+.timer-block .label {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  color: var(--color-dark-blue);
+}
+
+.timer-controls {
+  display: flex;
+  gap: 1rem;
+}
+
+.timer-button {
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.timer-button:hover {
+  background: var(--color-light-blue);
+  color: white;
+}
+
+.timer-button.reset {
+  background: var(--color-pale-gray);
+}
+
+.timer-button.reset:hover {
+  background: var(--color-dark-blue);
+  color: white;
+}
+
+/* ------------ TIMER ACTIVITY LIST ------------ */
+.timer-activity-list {
+  background: white;
+  padding: 1.5rem 2rem;
+  border-radius: 2rem;
+  margin-top: 2rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.timer-activity-list h3 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.timer-activity-list .activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Override item style for timer context */
+.timer-activity-list .activity-item {
+  background: var(--color-light-blue);
+  color: white;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0.75rem 1.5rem;
+  border-radius: 2rem;
+  position: relative;
+}
+
+/* hide the date under tasks */
+.timer-activity-list .activity-item .item-date {
+  display: none;
+}
+
+/* fake checkbox before each task */
+.timer-activity-list .activity-item::before {
+  content: "";
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid white;
+  border-radius: 0.5rem;
+  background: var(--color-pale-gray);
+}
+
+/* ================================
+   DETAIL PANEL
+   ================================ */
+.detail-panel {
+  position: relative;
+  background: white;
+  padding: 2rem;
+  border-radius: .75rem;
+  box-shadow: -8px 0 16px rgba(0,0,0,0.05);
+  overflow-y: auto;
+}
+.detail-panel .close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: .7;
+}
+.detail-panel .close-btn:hover {
+  opacity: 1;
+}
+.detail-panel-content {
+  max-width: 280px;
+}
+.detail-panel-content .detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.detail-panel-content h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+.detail-actions {
+  display: flex;
+  gap: .5rem;
+}
+.detail-actions button {
+  background: none;
+  border: none;
+  padding: .25rem;
+  cursor: pointer;
+}
+.detail-actions button svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  color: var(--color-dark-blue);
+}
+.detail-actions button:hover svg {
+  color: var(--color-light-blue);
+}
+.detail-panel-content ul {
+  margin: 1rem 0;
+  padding-left: 1rem;
+  list-style: disc;
+}
+.detail-panel-content .created-at {
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--color-dark-blue);
+  margin-top: 1rem;
+}

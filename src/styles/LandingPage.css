@@ -70,17 +70,17 @@ ul {
   
 }
 .lp-logo {
-  font-size: 2rem;
-  font-weight: bold;
+  font-size: 1.75rem;
+  font-weight: bolder;
   color: var(--primary);
+  font-family: "Baloo 2", sans-serif;
 }
 
 .lp-logo span {
   color: #ffffff;
   background-color: var(--primary);
-  padding: 3% 0.25rem;
+  padding: 0 2px;
   border-radius: 5px;
-  margin: 0 0.05rem;
 }
 
 .lp-nav a {
@@ -430,15 +430,19 @@ ul {
   }
 }
 
-.step-icon,
-.lp-about .about-text p {
+.lp-features h2,
+.lp-about h2,
+.lp-howto h2,
+.lp-about p {
   opacity: 0;
-  transform: translateY(50px);
+  transform: translateY(20px);
   transition: opacity 0.9s ease-out, transform 0.9s ease-out;
 }
 
-.step-icon.in-view,
-.lp-about .about-text p.in-view {
+.lp-features h2.in-view,
+.lp-about h2.in-view,
+.lp-howto h2.in-view,
+.lp-about p.in-view {
   opacity: 1;
   transform: translateY(0);
 }
