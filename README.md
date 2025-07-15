@@ -10,3 +10,5 @@ StuffNudge adalah aplikasi web yang berfungsi sebagai planner aktivitas harian. 
 **Timer Aktivitas**
   - Atur timer agar kamu tetap fokus dan tepat waktu dalam menyelesaikan kegiatan.
 
+
+Link Repository BackEnd: https://github.com/PranadityaTriJyotistaVavitramPS/StuffNudgeBE.git
