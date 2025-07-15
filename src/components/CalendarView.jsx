@@ -7,10 +7,8 @@ export default function CalendarView({ activities, onDateClick }) {
   const end = endOfMonth(today);
   const days = eachDayOfInterval({ start, end });
 
-  // group by date
   const hasActivity = new Set(activities.map(a => a.date));
 
-  // build calendar rows
   const blanks = Array(getDay(start)).fill(null);
   const cells = [...blanks, ...days];
 

@@ -1,8 +1,5 @@
 @import './variables.css';
 
-/* ================================
-   GLOBAL RESET & BASE
-   ================================ */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -17,9 +14,7 @@ body {
   overflow: hidden;
 }
 
-/* ================================
-   LAYOUT GRID
-   ================================ */
+
 .dashboard-container {
   display: grid;
   grid-template-columns: 240px 1fr 320px;
@@ -27,9 +22,7 @@ body {
   overflow: hidden;
 }
 
-/* ================================
-   SIDEBAR NAV
-   ================================ */
+
 .sidebar {
   background: var(--color-dark-blue);
   color: white;
@@ -63,15 +56,13 @@ body {
   color: var(--color-pale-gray);
 }
 
-/* ================================
-   MAIN CONTENT
-   ================================ */
+
 .main {
   padding: 2rem 1.5rem;
   overflow-y: auto;
 }
 
-/* HEADER */
+
 .main header h1 {
   font-size: 2rem;
   font-weight: 600;
@@ -89,7 +80,7 @@ body {
   border-radius: 2px;
 }
 
-/* TOP SECTION (FORM + LIST) */
+
 .top-section {
   display: flex;
   gap: 2rem;
@@ -97,9 +88,7 @@ body {
   flex-wrap: wrap;
 }
 
-/* ================================
-   ADD / EDIT FORM CARD
-   ================================ */
+
 .add-form {
   flex: 1 1 300px;
   background: white;
@@ -142,9 +131,7 @@ body {
   background: var(--color-dark-blue);
 }
 
-/* ================================
-   ACTIVITY LIST CARD
-   ================================ */
+
 .activity-list {
   flex: 1 1 300px;
   background: white;
@@ -162,9 +149,7 @@ body {
   border-radius: 4px;
 }
 
-/* ================================
-   ACTIVITY ITEM
-   ================================ */
+
 .activity-item {
   display: flex;
   flex-direction: column;
@@ -195,9 +180,6 @@ body {
   text-align: right;
 }
 
-/* ================================
-   CALENDAR VIEW
-   ================================ */
 .calendar {
   background: white;
   padding: 1.5rem;
@@ -230,9 +212,6 @@ body {
   font-weight: 600;
 }
 
-/* ================================
-   TIMER VIEW
-   ================================ */
 .timer-page-title {
   background: var(--color-pale-gray);
   padding: 0.75rem 1.5rem;
@@ -305,7 +284,6 @@ body {
   color: white;
 }
 
-/* ------------ TIMER ACTIVITY LIST ------------ */
 .timer-activity-list {
   background: white;
   padding: 1.5rem 2rem;
@@ -325,7 +303,6 @@ body {
   gap: 1rem;
 }
 
-/* Override item style for timer context */
 .timer-activity-list .activity-item {
   background: var(--color-light-blue);
   color: white;
@@ -337,12 +314,10 @@ body {
   position: relative;
 }
 
-/* hide the date under tasks */
 .timer-activity-list .activity-item .item-date {
   display: none;
 }
 
-/* fake checkbox before each task */
 .timer-activity-list .activity-item::before {
   content: "";
   position: absolute;
@@ -356,9 +331,6 @@ body {
   background: var(--color-pale-gray);
 }
 
-/* ================================
-   DETAIL PANEL
-   ================================ */
 .detail-panel {
   position: relative;
   background: white;

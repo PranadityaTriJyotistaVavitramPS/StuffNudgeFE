@@ -5,7 +5,6 @@ export default function AddActivityForm({ onSave, initialData }) {
   const [name, setName] = useState('');
   const [items, setItems] = useState('');
 
-  // Prefill saat edit dipilih
   useEffect(() => {
     if (initialData) {
       setDate(initialData.date);
