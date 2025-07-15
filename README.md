@@ -1,4 +1,4 @@
-# StuffNudge App
+# 🚀 StuffNudge App
 
 StuffNudge adalah aplikasi web yang berfungsi sebagai planner aktivitas harian. Aplikasi ini membantu mencatat kegiatan, mengingatkan barang bawaan penting, mengatur timer untuk tugas, serta menyimpan histori aktivitas dalam kalender interaktif.
 
