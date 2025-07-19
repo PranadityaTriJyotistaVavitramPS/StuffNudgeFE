@@ -17,4 +17,4 @@ StuffNudge adalah aplikasi web yang berfungsi sebagai planner aktivitas harian. 
 
 
 
-Link Repository BackEnd: https://github.com/PranadityaTriJyotistaVavitramPS/StuffNudgeBE.git
+Repository BackEnd: https://github.com/PranadityaTriJyotistaVavitramPS/StuffNudgeBE.git
