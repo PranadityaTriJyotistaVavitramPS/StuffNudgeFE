@@ -1,3 +1,4 @@
+// src/pages/Dashboard.jsx
 import React, { useState, useCallback } from 'react';
 import { format } from 'date-fns';
 import { FiPlus } from 'react-icons/fi';
@@ -45,14 +46,12 @@ export default function Dashboard() {
       const now = new Date().toISOString();
       const newAct = { ...act, createdAt: now, completed: false };
       setActivities(a => [newAct, ...a]);
-      setSelected(newAct);
     }
     setEditAct(null);
     setModal(false);
   };
 
   const handleDelete = id => {
- 
     setActivities(a => a.filter(x => x.id !== id));
     setSelected(null);
     setEditAct(null);
@@ -64,7 +63,6 @@ export default function Dashboard() {
   };
 
   const handleComplete = id => {
-   
     setActivities(a => a.map(x => x.id === id ? { ...x, completed: true } : x));
     setSelected(null);
   };
@@ -73,6 +71,11 @@ export default function Dashboard() {
     setFilter(date);
     setView('history');
     setSearchQuery('');
+
+    if (selected) {
+      const actsOnDate = activities.filter(a => a.date === date);
+      setSelected(actsOnDate.length > 0 ? actsOnDate[0] : null);
+    }
   };
 
   const handleProfileSave = ({ username, email }) => {
@@ -80,22 +83,18 @@ export default function Dashboard() {
     alert('Profil berhasil disimpan.');
   };
 
-  
   const filterByQuery = list =>
     list.filter(a => a.name.toLowerCase().includes(searchQuery));
-
 
   const activeActs = activities.filter(a => !a.completed);
   const visibleMainActs = searchQuery
     ? filterByQuery(activeActs)
     : activeActs;
 
-  
-  const rawShown = activities.filter(a => a.date === filterDate);
-  const shownActs = rawShown;
+  const shownActs = activities.filter(a => a.date === filterDate);
   const calendarResults = searchQuery
-    ? filterByQuery(activities)  
-    : shownActs;               
+    ? filterByQuery(activities)
+    : shownActs;
 
   const todayKey = format(new Date(), 'yyyy-MM-dd');
   const rawToday = activities.filter(a => a.date === todayKey && !a.completed);
@@ -124,11 +123,8 @@ export default function Dashboard() {
               <div className="empty-state">
                 <div className="empty-cta-card">
                   <h2>Halo, {user.username}</h2>
-                  <p>Rencakan aktivitasmu sekarang dengan mudah!</p>
-                  <button
-                    className="btn-add-main"
-                    onClick={() => { setModal(true); setEditAct(null); }}
-                  >
+                  <p>Rencanakan aktivitasmu sekarang dengan mudah!</p>
+                  <button className="btn-add-main" onClick={() => { setModal(true); setEditAct(null); }}>
                     Mulai Aktivitas Baru
                   </button>
                 </div>
@@ -145,7 +141,6 @@ export default function Dashboard() {
               selectedDate={filterDate}
               onDateClick={handleDateClick}
             />
-
             {calendarResults.length > 0 ? (
               <ActivityList activities={calendarResults} onSelect={act => setSelected(act)} />
             ) : (
@@ -180,7 +175,7 @@ export default function Dashboard() {
       </main>
 
       {selected && (
-        <aside key={selected.id} className="detail-panel">
+        <aside className="detail-panel">
           <button className="close-btn" onClick={() => setSelected(null)}>✕</button>
           <ActivityDetail
             activity={selected}
@@ -194,7 +189,11 @@ export default function Dashboard() {
       {showModal && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <AddActivityForm onSave={handleSave} onCancel={() => setModal(false)} initialData={editAct} />
+            <AddActivityForm
+              onSave={handleSave}
+              onCancel={() => setModal(false)}
+              initialData={editAct}
+            />
           </div>
         </div>
       )}
