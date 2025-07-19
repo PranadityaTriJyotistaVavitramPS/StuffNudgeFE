@@ -1,5 +1,4 @@
-// src/pages/Dashboard.jsx
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { format } from 'date-fns';
 import { FiPlus } from 'react-icons/fi';
 import Navbar from '../components/Navbar';
@@ -23,6 +22,45 @@ export default function Dashboard() {
     username: 'User123',
     email: 'user@example.com',
   });
+
+  const [timerInputHours, setTimerInputHours] = useState(0);
+  const [timerInputMinutes, setTimerInputMinutes] = useState(0);
+  const [timerSecondsLeft, setTimerSecondsLeft] = useState(0);
+  const [timerRunning, setTimerRunning] = useState(false);
+
+  useEffect(() => {
+    let interval;
+    if (timerRunning) {
+      interval = setInterval(() => {
+        setTimerSecondsLeft(prev => {
+          if (prev <= 1) {
+            clearInterval(interval);
+            setTimerRunning(false);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [timerRunning]);
+
+  const handleTimerStart = () => {
+    const total = timerInputHours * 3600 + timerInputMinutes * 60;
+    if (total > 0) {
+      setTimerSecondsLeft(total);
+      setTimerRunning(true);
+    }
+  };
+  const handleTimerToggle = () => {
+    if (timerSecondsLeft > 0) setTimerRunning(r => !r);
+  };
+  const handleTimerReset = () => {
+    setTimerRunning(false);
+    setTimerSecondsLeft(0);
+    setTimerInputHours(0);
+    setTimerInputMinutes(0);
+  };
 
   const handleNav = useCallback(v => {
     const todayKey = format(new Date(), 'yyyy-MM-dd');
@@ -71,10 +109,9 @@ export default function Dashboard() {
     setFilter(date);
     setView('history');
     setSearchQuery('');
-
     if (selected) {
       const actsOnDate = activities.filter(a => a.date === date);
-      setSelected(actsOnDate.length > 0 ? actsOnDate[0] : null);
+      setSelected(actsOnDate[0] || null);
     }
   };
 
@@ -156,7 +193,17 @@ export default function Dashboard() {
         {view === 'timer' && (
           <>
             <h2 className="section-title">Timer</h2>
-            <Timer />
+            <Timer
+              inputHours={timerInputHours}
+              inputMinutes={timerInputMinutes}
+              secondsLeft={timerSecondsLeft}
+              running={timerRunning}
+              onChangeHours={setTimerInputHours}
+              onChangeMinutes={setTimerInputMinutes}
+              onStart={handleTimerStart}
+              onToggle={handleTimerToggle}
+              onReset={handleTimerReset}
+            />
             {todayActs.length > 0 ? (
               <ActivityList activities={todayActs} onSelect={act => setSelected(act)} />
             ) : (
@@ -189,11 +236,7 @@ export default function Dashboard() {
       {showModal && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <AddActivityForm
-              onSave={handleSave}
-              onCancel={() => setModal(false)}
-              initialData={editAct}
-            />
+            <AddActivityForm onSave={handleSave} onCancel={() => setModal(false)} initialData={editAct} />
           </div>
         </div>
       )}
