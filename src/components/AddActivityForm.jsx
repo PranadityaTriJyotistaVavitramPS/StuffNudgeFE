@@ -70,7 +70,7 @@ export default function AddActivityForm({ onSave, onCancel, initialData }) {
         type="text"
         value={itemsInput}
         onChange={e => setItemsInput(e.target.value)}
-        placeholder="Contoh: dompet, kunci, tumbler..."
+        placeholder="Contoh: Dompet, earphone, tumbler..."
       />
 
       <div className="modal-form-actions">
