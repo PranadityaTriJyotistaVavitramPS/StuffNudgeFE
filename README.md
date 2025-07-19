@@ -7,11 +7,11 @@ StuffNudge adalah aplikasi web yang berfungsi sebagai planner aktivitas harian. 
    
    Input aktivitas harian, lengkap dengan daftar barang yang harus dibawa.
 
-3. Kalender Histori Aktivitas
+2. Kalender Histori Aktivitas
    
    Pantau aktivitas lewat kalender.
       
-5. Timer Aktivitas
+3. Timer Aktivitas
    
    Atur timer agar kamu tetap fokus dan tepat waktu dalam menyelesaikan kegiatan.
 
