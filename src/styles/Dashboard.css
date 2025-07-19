@@ -211,10 +211,10 @@ body {
 }
 
 .btn-add-floating {
-  --size: 3.5rem;
+  --size: 3rem;
   position: fixed;
-  top: 5rem;
-  right: 4rem;
+  top: 4rem;
+  left: 30rem;
   width: var(--size);
   height: var(--size);
   background: var(--color-light-blue);
@@ -230,7 +230,7 @@ body {
 }
 
 .btn-add-floating:hover {
-  transform: scale(1.1);
+  transform: rotate(90deg);
   background: var(--color-dark-blue);
 }
 
@@ -661,11 +661,12 @@ body {
   height: 9rem;
   background: var(--color-beige);
   border-radius: 0.75rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  border-right: 4px solid var(--color-dark-blue);
+  border-bottom: 4px solid var(--color-dark-blue);
 }
 .timer-block .time {
   font-size: 3.75rem;
