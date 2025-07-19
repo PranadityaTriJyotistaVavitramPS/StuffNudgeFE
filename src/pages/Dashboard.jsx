@@ -1,127 +1,202 @@
 import React, { useState, useCallback } from 'react';
-import { FiX } from 'react-icons/fi';
+import { format } from 'date-fns';
+import { FiPlus } from 'react-icons/fi';
 import Navbar from '../components/Navbar';
 import AddActivityForm from '../components/AddActivityForm';
 import ActivityList from '../components/ActivityList';
 import ActivityDetail from '../components/ActivityDetail';
 import Timer from '../components/Timer';
 import CalendarView from '../components/CalendarView';
+import Profile from '../components/Profile';
 
 export default function Dashboard() {
-  const [view, setView] = useState('main'); 
+  const [view, setView] = useState('main');
   const [activities, setActivities] = useState([]);
   const [selected, setSelected] = useState(null);
-  const [editActivity, setEditActivity] = useState(null);
-  const [filteredDate, setFilteredDate] = useState(null);
+  const [editAct, setEditAct] = useState(null);
+  const [filterDate, setFilter] = useState(null);
+  const [showModal, setModal] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const handleNav = useCallback((newView) => {
-    setView(newView);
-    if (newView === 'main') {
-      setFilteredDate(null);
-      setSelected(null);
-      setEditActivity(null);
-    }
-    if (newView !== 'history') {
-      setFilteredDate(null);
-    }
+  const [user, setUser] = useState({
+    username: 'User123',
+    email: 'user@example.com',
+  });
+
+  const handleNav = useCallback(v => {
+    const todayKey = format(new Date(), 'yyyy-MM-dd');
+    setView(v);
+    setSelected(null);
+    setEditAct(null);
+    setFilter(v === 'history' ? todayKey : null);
+    setSearchQuery('');
   }, []);
 
-  const handleSave = (act) => {
-    if (editActivity) {
-      const updated = { ...act, createdAt: editActivity.createdAt };
-      setActivities((prev) =>
-        prev.map((a) => (a.id === updated.id ? updated : a))
-      );
+  const handleSearch = q => {
+    setSearchQuery(q.toLowerCase().trim());
+  };
+
+  const handleSave = act => {
+    if (editAct) {
+      const updated = { ...act, createdAt: editAct.createdAt, completed: editAct.completed };
+      setActivities(a => a.map(x => x.id === updated.id ? updated : x));
       setSelected(updated);
     } else {
-      const newAct = { ...act, createdAt: new Date().toISOString() };
-      setActivities((prev) => [newAct, ...prev]);
+      const now = new Date().toISOString();
+      const newAct = { ...act, createdAt: now, completed: false };
+      setActivities(a => [newAct, ...a]);
       setSelected(newAct);
     }
-    setEditActivity(null);
+    setEditAct(null);
+    setModal(false);
   };
 
-  const handleDelete = (id) => {
-    setActivities((prev) => prev.filter((a) => a.id !== id));
-    if (selected?.id === id) setSelected(null);
-    if (editActivity?.id === id) setEditActivity(null);
-  };
-
-  const handleEdit = (act) => {
-    setEditActivity(act);
+  const handleDelete = id => {
+ 
+    setActivities(a => a.filter(x => x.id !== id));
     setSelected(null);
-    setView('main');
+    setEditAct(null);
   };
 
-  const handleDateClick = (date) => {
-    setFilteredDate(date);
+  const handleEdit = act => {
+    setEditAct(act);
+    setModal(true);
+  };
+
+  const handleComplete = id => {
+   
+    setActivities(a => a.map(x => x.id === id ? { ...x, completed: true } : x));
+    setSelected(null);
+  };
+
+  const handleDateClick = date => {
+    setFilter(date);
     setView('history');
-    setSelected(null);
+    setSearchQuery('');
   };
 
-  const toShow = filteredDate
-    ? activities.filter((a) => a.date === filteredDate)
-    : activities;
+  const handleProfileSave = ({ username, email }) => {
+    setUser(u => ({ ...u, username, email }));
+    alert('Profil berhasil disimpan.');
+  };
+
+  
+  const filterByQuery = list =>
+    list.filter(a => a.name.toLowerCase().includes(searchQuery));
+
+
+  const activeActs = activities.filter(a => !a.completed);
+  const visibleMainActs = searchQuery
+    ? filterByQuery(activeActs)
+    : activeActs;
+
+  
+  const rawShown = activities.filter(a => a.date === filterDate);
+  const shownActs = rawShown;
+  const calendarResults = searchQuery
+    ? filterByQuery(activities)  
+    : shownActs;               
+
+  const todayKey = format(new Date(), 'yyyy-MM-dd');
+  const rawToday = activities.filter(a => a.date === todayKey && !a.completed);
+  const todayActs = searchQuery
+    ? filterByQuery(rawToday)
+    : rawToday;
 
   return (
-    <div className="dashboard-container">
-      <Navbar onSelect={handleNav} currentView={view} />
+    <div className={`dashboard-container${selected ? ' with-detail' : ''}`}>
+      <Navbar onSelect={handleNav} currentView={view} onSearch={handleSearch} />
+
       <main className="main">
         {view === 'main' && (
           <>
-            <header>
-              <h1>Dashboard Aktivitas</h1>
-            </header>
-            <AddActivityForm onSave={handleSave} initialData={editActivity} />
-            <ActivityList
-              activities={activities}
-              onSelect={(act) => {
-                setSelected(act);
-                setEditActivity(null);
-              }}
-            />
+            <header><h1 className="section-title">Aktivitasmu</h1></header>
+            {visibleMainActs.length > 0 ? (
+              <>
+                <ActivityList activities={visibleMainActs} onSelect={act => setSelected(act)} />
+                <button className="btn-add-floating" onClick={() => { setModal(true); setEditAct(null); }}>
+                  <FiPlus size={24} />
+                </button>
+              </>
+            ) : searchQuery ? (
+              <p className="no-activity">Aktivitas tidak ditemukan.</p>
+            ) : (
+              <div className="empty-state">
+                <div className="empty-cta-card">
+                  <h2>Halo, {user.username}</h2>
+                  <p>Rencakan aktivitasmu sekarang dengan mudah!</p>
+                  <button
+                    className="btn-add-main"
+                    onClick={() => { setModal(true); setEditAct(null); }}
+                  >
+                    Mulai Aktivitas Baru
+                  </button>
+                </div>
+              </div>
+            )}
           </>
         )}
 
         {view === 'history' && (
           <>
+            <h2 className="section-title">Riwayat Aktivitas</h2>
             <CalendarView
               activities={activities}
+              selectedDate={filterDate}
               onDateClick={handleDateClick}
             />
-            <ActivityList
-              activities={toShow}
-              onSelect={(act) => setSelected(act)}
-            />
+
+            {calendarResults.length > 0 ? (
+              <ActivityList activities={calendarResults} onSelect={act => setSelected(act)} />
+            ) : (
+              <p className="no-activity">
+                {searchQuery
+                  ? 'Aktivitas tidak ditemukan.'
+                  : 'Tidak ada aktivitas pada tanggal ini.'}
+              </p>
+            )}
           </>
         )}
 
         {view === 'timer' && (
           <>
-            <h2 className="timer-page-title">Timer</h2>
+            <h2 className="section-title">Timer</h2>
             <Timer />
-            <div className="timer-activity-list">
-              <h3>Tasks</h3>
-              <ActivityList activities={activities} onSelect={() => {}} />
-            </div>
+            {todayActs.length > 0 ? (
+              <ActivityList activities={todayActs} onSelect={act => setSelected(act)} />
+            ) : (
+              <p className="no-activity">
+                {searchQuery
+                  ? 'Aktivitas tidak ditemukan.'
+                  : 'Belum ada aktivitas untuk hari ini.'}
+              </p>
+            )}
           </>
+        )}
+
+        {view === 'profile' && (
+          <Profile user={user} onSaveProfile={handleProfileSave} />
         )}
       </main>
 
-      {view === 'main' && selected && (
+      {selected && (
         <aside className="detail-panel">
-          <button
-            className="close-btn"
-            onClick={() => setSelected(null)}
-          >
-            <FiX size={20} />
-          </button>
+          <button className="close-btn" onClick={() => setSelected(null)}>✕</button>
           <ActivityDetail
             activity={selected}
             onEdit={handleEdit}
             onDelete={handleDelete}
+            onComplete={handleComplete}
           />
         </aside>
+      )}
+
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <AddActivityForm onSave={handleSave} onCancel={() => setModal(false)} initialData={editAct} />
+          </div>
+        </div>
       )}
     </div>
   );

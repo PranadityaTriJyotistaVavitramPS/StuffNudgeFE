@@ -1,58 +1,86 @@
 import React, { useState, useEffect } from 'react';
 
-export default function AddActivityForm({ onSave, initialData }) {
-  const [date, setDate] = useState('');
+export default function AddActivityForm({ onSave, onCancel, initialData }) {
   const [name, setName] = useState('');
-  const [items, setItems] = useState('');
+  const [date, setDate] = useState('');
+  const [description, setDescription] = useState('');
+  const [itemsInput, setItemsInput] = useState('');
 
   useEffect(() => {
     if (initialData) {
-      setDate(initialData.date);
       setName(initialData.name);
-      setItems(initialData.items.join(', '));
+      setDate(initialData.date);
+      setDescription(initialData.description || '');
+      setItemsInput((initialData.items || []).join(', '));
     } else {
-      setDate(''); setName(''); setItems('');
+      setName('');
+      setDate('');
+      setDescription('');
+      setItemsInput('');
     }
   }, [initialData]);
 
   const handleSubmit = e => {
     e.preventDefault();
-    if (!date || !name) return;
-    const payload = {
+    if (!name || !date) return;
+    const items = itemsInput
+      .split(',')
+      .map(s => s.trim())
+      .filter(s => s);
+    onSave({
       id: initialData?.id || Date.now(),
-      date,
       name,
-      items: items.split(',').map(s => s.trim()),
-    };
-    onSave(payload);
+      date,
+      description,
+      items,
+    });
   };
 
   return (
-    <form className="add-form" onSubmit={handleSubmit}>
-      <h3>
-        {initialData ? 'Edit Aktivitas' : 'Tambah Aktivitas Baru'}
-      </h3>
+    <form className="add-form modal-form" onSubmit={handleSubmit}>
+      <h3>{initialData ? 'Ubah Aktivitas' : 'Tambah Aktivitas'}</h3>
+
+      <label>Nama Aktivitas</label>
+      <input
+        type="text"
+        value={name}
+        onChange={e => setName(e.target.value)}
+        required
+      />
+
+      <label>Tanggal</label>
       <input
         type="date"
         value={date}
         onChange={e => setDate(e.target.value)}
         required
       />
+
+      <label>Deskripsi</label>
+      <textarea
+        value={description}
+        onChange={e => setDescription(e.target.value)}
+        placeholder="Deskripsi singkat..."
+        rows={3}
+        style={{ resize: 'vertical', maxHeight: '150px' }}
+      />
+
+      <label>Barang Bawaan (pisahkan dengan koma)</label>
       <input
         type="text"
-        placeholder="Nama Aktivitas"
-        value={name}
-        onChange={e => setName(e.target.value)}
-        required
+        value={itemsInput}
+        onChange={e => setItemsInput(e.target.value)}
+        placeholder="Contoh: dompet, kunci, tumbler..."
       />
-      <textarea
-        placeholder="Barang dibawa (pisahkan dengan koma)"
-        value={items}
-        onChange={e => setItems(e.target.value)}
-      />
-      <button type="submit">
-        {initialData ? 'Update' : 'Tambah'}
-      </button>
+
+      <div className="modal-form-actions">
+        <button type="button" className="btn-cancel" onClick={onCancel}>
+          Batal
+        </button>
+        <button type="submit" className="btn-save">
+          {initialData ? 'Update' : 'Tambah'}
+        </button>
+      </div>
     </form>
   );
 }

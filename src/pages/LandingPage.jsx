@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import '../styles/LandingPage.css';
+import logo from '../assets/logos.svg';
 import {
   FiClock,
   FiCheckCircle,
@@ -19,7 +20,7 @@ import {
   BiCheckSquare  
 } from 'react-icons/bi';
 
-export default function LandingPage() {
+export default function LandingPage({ onEnter }) {
   useEffect(() => {
     const selector = [
       '.lp-about .about-text p',
@@ -48,20 +49,25 @@ export default function LandingPage() {
   return (
     <div className="lp-container">
       <header className="lp-header">
-        <a href="home" className="lp-logo">
+        <a href="#hero" className="lp-logo">
           Stuff<span>Nudge</span>
         </a>
         <nav className="lp-nav">
           <a href="#features">Fitur</a>
           <a href="#about">Tentang</a>
           <a href="#howto">Cara Pakai</a>
-          <button className="btn-cta">Daftar</button>
+          <button className="btn-cta" onClick={onEnter}>
+            Daftar
+          </button>
         </nav>
       </header>
 
       <section className="lp-hero" id="hero">
-        <h1>Selesaikan Aktivitasmu<br></br> dengan Mudah!</h1>
-        <button className="btn-hero">Mulai Sekarang!</button>
+        <img src={logo} alt="Logo StuffNudge" className="lp-logopict" />
+        <h1>Selesaikan Aktivitasmu<br/> dengan Mudah!</h1>
+        <button className="btn-hero" onClick={onEnter}>
+          Mulai Sekarang!
+        </button>
       </section>
 
       <section className="lp-about" id="about">
@@ -75,7 +81,7 @@ export default function LandingPage() {
             </p>
           </div>
           <div className="about-image">
-            <img src="/src/assets/drawer.svg" alt="Ilustrasi tentang StuffNudge" />
+            <img src="/src/assets/drawer.svg" alt="Ilustrasi StuffNudge" />
           </div>
         </div>
       </section>
@@ -86,7 +92,7 @@ export default function LandingPage() {
           <div className="feature-card">
             <div className="feature-icon"><BiCheckSquare size={32} /></div>
             <h3>Lengkapi Aktivitas</h3>
-            <p>Selesaikan dan tandai aktifitas sebagai selesai dengan sekali klik.</p>
+            <p>Selesaikan dan tandai aktivitas sebagai selesai dengan sekali klik.</p>
           </div>
           <div className="feature-card">
             <div className="feature-icon"><CgCalendarTwo size={32} /></div>
@@ -110,34 +116,34 @@ export default function LandingPage() {
         <h2>Cara Pakai StuffNudge</h2>
         <div className="howto-flow">
           <div className="howto-row">
-            <div className="howto-step" id="step-tambah-aktivitas">
+            <div className="howto-step">
               <div className="step-icon"><LuFilePlus2 size={60} /></div>
               <p>Tambah Aktivitas</p>
             </div>
             <div className="connector" />
-            <div className="howto-step" id="step-tambah-barang">
-             <div className="step-icon"><FiExternalLink size={60} /></div>
+            <div className="howto-step">
+              <div className="step-icon"><FiExternalLink size={60} /></div>
               <p>Tambah Barang Bawaan</p>
             </div>
             <div className="connector" />
-            <div className="howto-step" id="step-atur-timer">
+            <div className="howto-step">
               <div className="step-icon"><LuTimer size={60} /></div>
               <p>Atur Timer</p>
-              <div className="connector-vertical" />
             </div>
           </div>
+          <div className='connector-vertical'></div>
           <div className="howto-row">
-            <div className="howto-step" id="step-tandai-selesai">
+            <div className="howto-step">
               <div className="step-icon"><FiCheckCircle size={60} /></div>
               <p>Tandai Selesai</p>
             </div>
             <div className="connector" />
-            <div className="howto-step" id="step-lengkapi-aktivitas">
-             <div className="step-icon"><BiCheckSquare size={60} /></div>
+            <div className="howto-step">
+              <div className="step-icon"><BiCheckSquare size={60} /></div>
               <p>Lengkapi Aktivitas</p>
             </div>
             <div className="connector" />
-            <div className="howto-step" id="step-histori-aktivitas">
+            <div className="howto-step">
               <div className="step-icon"><CgCalendarTwo size={60} /></div>
               <p>Histori Aktivitas</p>
             </div>
@@ -150,9 +156,9 @@ export default function LandingPage() {
           <a href="#features">Fitur</a>
           <a href="#about">Tentang</a>
           <a href="#howto">Cara Pakai</a>
-          <a href="#documentation">Dokumentasi</a>
+          <a href="https://github.com/hadijaamrun/stuffnudge-app" target='blank'>Dokumentasi</a>
         </div>
-        <p className="copy-right">&copy; 2025 StuffNudge. All rights reserved.</p>
+        <p className="copy-right">&copy; 2025 StuffNudge. Powered by our dreams.</p>
       </footer>
     </div>
   );
