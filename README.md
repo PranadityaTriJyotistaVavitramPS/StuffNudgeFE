@@ -5,8 +5,10 @@ StuffNudge adalah aplikasi web yang berfungsi sebagai planner aktivitas harian. 
 ## ✨ Fitur Utama (MVP)
 ** 1. Tambah & Kelola Aktivitas**
       Input aktivitas harian, lengkap dengan daftar barang yang harus dibawa.
+      
 ** 2. Kalender Histori Aktivitas**
       Pantau aktivitas lewat kalender.
+      
 ** 3. Timer Aktivitas**
       Atur timer agar kamu tetap fokus dan tepat waktu dalam menyelesaikan kegiatan.
 
