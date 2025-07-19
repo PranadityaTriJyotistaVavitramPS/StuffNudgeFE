@@ -498,6 +498,18 @@ body {
 .detail-actions.bottom button:not(.complete-btn):hover {
   background: var(--color-dark-blue);
 }
+
+.completed-notice {
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  background: var(--accent);
+  border-left: 4px solid var(--secondary);
+  color: var(--primary);
+  font-style: italic;
+  border-radius: 0.25rem;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
 /* =========
    CALENDAR  
    ========= */

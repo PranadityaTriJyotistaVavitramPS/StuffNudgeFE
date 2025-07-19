@@ -180,7 +180,7 @@ export default function Dashboard() {
       </main>
 
       {selected && (
-        <aside className="detail-panel">
+        <aside key={selected.id} className="detail-panel">
           <button className="close-btn" onClick={() => setSelected(null)}>✕</button>
           <ActivityDetail
             activity={selected}

@@ -23,7 +23,9 @@ export default function ActivityDetail({ activity, onEdit, onDelete, onComplete 
         {format(new Date(date), 'dd MMMM yyyy', { locale: localeID })}
       </p>
 
-      <p className="detail-thing"><strong>Barang Bawaan:</strong></p>
+      <p className="detail-thing">
+        <strong>Barang Bawaan:</strong>
+      </p>
       <ul>
         {items.map((it, i) => (
           <li key={i}>{it}</li>
@@ -36,6 +38,12 @@ export default function ActivityDetail({ activity, onEdit, onDelete, onComplete 
         Dibuat pada:{' '}
         {format(new Date(createdAt), 'dd MMMM yyyy HH:mm', { locale: localeID })}
       </p>
+
+      {completed && (
+        <p className="completed-notice">
+          Aktivitas ini sudah kamu selesaikan.
+        </p>
+      )}
 
       <div className="detail-actions bottom">
         {!completed && (

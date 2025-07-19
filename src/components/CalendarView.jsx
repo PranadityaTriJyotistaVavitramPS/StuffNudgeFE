@@ -12,9 +12,12 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 const daysOfWeek = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
 
-export default function CalendarView({ activities, onDateClick }) {
+export default function CalendarView({
+  activities,
+  selectedDate,
+  onDateClick,
+}) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState(null);
   const today = new Date();
 
   const start = startOfMonth(currentMonth);
@@ -25,11 +28,6 @@ export default function CalendarView({ activities, onDateClick }) {
 
   const prevMonth = () => setCurrentMonth(m => addMonths(m, -1));
   const nextMonth = () => setCurrentMonth(m => addMonths(m, 1));
-
-  const handleClickDate = dateStr => {
-    setSelectedDate(dateStr);
-    onDateClick(dateStr);
-  };
 
   return (
     <div className="calendar-view">
@@ -58,13 +56,13 @@ export default function CalendarView({ activities, onDateClick }) {
                 if (!day) return <td key={idx} />;
 
                 const dateStr = format(day, 'yyyy-MM-dd');
-                const isTodayCell = dateStr === format(today, 'yyyy-MM-dd');
+                const isToday = dateStr === format(today, 'yyyy-MM-dd');
                 const hasActivity = activities.some(a => a.date === dateStr);
                 const isSelected = dateStr === selectedDate;
 
                 const classNames = [
                   hasActivity && 'has-activity',
-                  isTodayCell && 'today',
+                  isToday && 'today',
                   isSelected && 'selected'
                 ].filter(Boolean).join(' ');
 
@@ -72,7 +70,7 @@ export default function CalendarView({ activities, onDateClick }) {
                   <td
                     key={idx}
                     className={classNames}
-                    onClick={() => handleClickDate(dateStr)}
+                    onClick={() => onDateClick(dateStr)}
                   >
                     {format(day, 'd')}
                   </td>
