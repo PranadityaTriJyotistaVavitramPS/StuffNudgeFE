@@ -20,7 +20,11 @@ import {
   BiCheckSquare  
 } from 'react-icons/bi';
 
+import { useNavigate } from 'react-router-dom';
+import { putAccessToken } from '../utils/network-data';
+
 export default function LandingPage({ onEnter }) {
+  const navigate = useNavigate();
   useEffect(() => {
     const selector = [
       '.lp-about .about-text p',
@@ -46,6 +50,10 @@ export default function LandingPage({ onEnter }) {
     return () => observer.disconnect();
   }, []);
 
+  const onDaftar = ()=>{
+    putAccessToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoiZjRkYjFmMzEtNzBkYy00Y2U5LWJlMjktNWQ5NjhjNmMyMjJlIiwiaWF0IjoxNzUyNTkzMjI3fQ.ZwSeIZ6y1K_u4sTYhZZ9op3SwDI3idxKDIITUOZGtKk");
+    navigate('/dashboard') 
+  }
   return (
     <div className="lp-container">
       <header className="lp-header">
@@ -56,7 +64,7 @@ export default function LandingPage({ onEnter }) {
           <a href="#features">Fitur</a>
           <a href="#about">Tentang</a>
           <a href="#howto">Cara Pakai</a>
-          <button className="btn-cta" onClick={onEnter}>
+          <button className="btn-cta" onClick={onDaftar}>
             Daftar
           </button>
         </nav>

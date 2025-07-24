@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import { getAccessToken, getUserLogged,updateUser,addActivity,getAllActivity,deleteActivity,updateActivity } from '../utils/network-data';
 import { format } from 'date-fns';
 import { FiPlus } from 'react-icons/fi';
 import Navbar from '../components/Navbar';
@@ -18,10 +19,44 @@ export default function Dashboard() {
   const [showModal, setModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const [user, setUser] = useState({
-    username: 'User123',
-    email: 'user@example.com',
-  });
+  const [user, setUser] = useState(null);
+  console.log(user)
+
+  const whoIsLogged = async () => {
+    const token = getAccessToken();
+    if (token) {
+      const userData = await getUserLogged();
+      if (userData.error) {
+        console.error("Failed to fetch user data:", userData.message);
+      } else {
+        setUser(userData.data);
+      }
+    }
+  }
+
+  const getActivities = async () => {
+    const result = await getAllActivity();
+    if (!result.error) {
+      const formatted = result.data.map(item => ({
+        ...item,
+        id: item.id_activity,
+        name: item.activity_name,
+        date: item.activity_date,
+        item: item.items,
+        completed: false 
+      }));
+      
+      console.log("Ini hasilnya",result.data[0])
+      setActivities(formatted);
+    } else {
+      alert("Gagal memuat aktivitas dari server.");
+    }
+  };
+
+  useEffect(() => {
+    whoIsLogged();
+    getActivities()
+  }, []);
 
   const [timerInputHours, setTimerInputHours] = useState(0);
   const [timerInputMinutes, setTimerInputMinutes] = useState(0);
@@ -44,6 +79,8 @@ export default function Dashboard() {
     }
     return () => clearInterval(interval);
   }, [timerRunning]);
+
+
 
   const handleTimerStart = () => {
     const total = timerInputHours * 3600 + timerInputMinutes * 60;
@@ -75,22 +112,49 @@ export default function Dashboard() {
     setSearchQuery(q.toLowerCase().trim());
   };
 
-  const handleSave = act => {
+  const handleSave = async (act) => {
     if (editAct) {
-      const updated = { ...act, createdAt: editAct.createdAt, completed: editAct.completed };
-      setActivities(a => a.map(x => x.id === updated.id ? updated : x));
-      setSelected(updated);
+      const result = await updateActivity({
+        id_activity:editAct.id,
+        createdAt: editAct.createdAt,
+        completed: editAct.completed,
+        description: act.description,
+        items: act.items,
+        activity_date: act.date,
+        activity_name: act.name
+      });
+      console.log("ini resultnya pas ngupdate", result);
+
+      if( result.error ){
+        alert('gagal lagi gagal lagi, capek bang udah rill');
+        return;
+      }
+
+      await getActivities();
+      setSelected(null); 
     } else {
-      const now = new Date().toISOString();
-      const newAct = { ...act, createdAt: now, completed: false };
-      setActivities(a => [newAct, ...a]);
+      const result = await addActivity({
+        activity_name: act.name,
+        activity_date: act.date,
+        description:act.description,
+        items: act.items,
+      });
+
+      if (result.error) {
+        alert('Gagal menyimpan aktivitas ke server.');
+        return;
+      }
+      await getActivities()
     }
+
     setEditAct(null);
     setModal(false);
   };
 
-  const handleDelete = id => {
-    setActivities(a => a.filter(x => x.id !== id));
+
+  const handleDelete = async(id) => {
+    await deleteActivity(id)
+    await getActivities()
     setSelected(null);
     setEditAct(null);
   };
@@ -115,15 +179,23 @@ export default function Dashboard() {
     }
   };
 
-  const handleProfileSave = ({ username, email }) => {
-    setUser(u => ({ ...u, username, email }));
-    alert('Profil berhasil disimpan.');
+  const handleProfileSave = async ({ username, email }) => {
+    const result = await updateUser({ username, email });
+
+    if (result.error) {
+      alert('Gagal mengupdate profil.');
+    } else {
+      await whoIsLogged();
+      alert('Profil berhasil disimpan.');
+    }
   };
+
 
   const filterByQuery = list =>
     list.filter(a => a.name.toLowerCase().includes(searchQuery));
 
   const activeActs = activities.filter(a => !a.completed);
+    
   const visibleMainActs = searchQuery
     ? filterByQuery(activeActs)
     : activeActs;
@@ -159,7 +231,7 @@ export default function Dashboard() {
             ) : (
               <div className="empty-state">
                 <div className="empty-cta-card">
-                  <h2>Halo, {user.username}</h2>
+                  <h2>Halo, {user?.username}</h2>
                   <p>Rencanakan aktivitasmu sekarang dengan mudah!</p>
                   <button className="btn-add-main" onClick={() => { setModal(true); setEditAct(null); }}>
                     Mulai Aktivitas Baru

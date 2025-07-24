@@ -1,16 +1,29 @@
 import React, { useState } from 'react';
+import { updateUser } from '../utils/network-data';
 
-export default function Profile({ user, onSaveProfile, onChangePassword }) {
+export default function Profile({ user, onSaveProfile }) {
   const [username, setUsername] = useState(user.username);
   const [email, setEmail] = useState(user.email);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  
 
   const handleProfileSubmit = e => {
     e.preventDefault();
     onSaveProfile({ username, email });
   };
+
+  const onChangePassword = async(password,newPassword) =>{
+    const result = await updateUser({password,newPassword})
+
+    console.log(result)
+    if (result.error) {
+      alert('Password atau Username Salah');
+    } else {
+      alert('password berhasil disimpan.');
+    }
+  }
 
   const handlePasswordSubmit = e => {
     e.preventDefault();
@@ -18,7 +31,9 @@ export default function Profile({ user, onSaveProfile, onChangePassword }) {
       alert('Konfirmasi password tidak cocok.');
       return;
     }
-    onChangePassword({ currentPassword, newPassword });
+    console.log("ini currentPassword",currentPassword);
+    console.log("ini new Password", newPassword);
+    onChangePassword(currentPassword, newPassword );
     setCurrentPassword('');
     setNewPassword('');
     setConfirmPassword('');

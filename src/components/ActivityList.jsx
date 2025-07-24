@@ -28,7 +28,7 @@ export default function ActivityList({ activities, onSelect }) {
 
   Object.keys(groups).forEach(label => {
     groups[label].sort((a, b) =>
-      new Date(a.date) - new Date(b.date)
+      parseISO(a.date) - parseISO(b.date)
     );
   });
 

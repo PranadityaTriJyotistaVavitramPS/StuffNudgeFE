@@ -1,12 +1,13 @@
 import React from 'react';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { id as localeID } from 'date-fns/locale';
 import { FiEdit, FiTrash2, FiCheckCircle } from 'react-icons/fi';
 
 export default function ActivityDetail({ activity, onEdit, onDelete, onComplete }) {
   if (!activity) return null;
 
-  const { id, name, description, date, items, createdAt, completed } = activity;
+  const { id, name, description, date, items, created_at, completed } = activity;
+  console.log('Activity detail:', activity);
 
   return (
     <div className="detail-panel-content">
@@ -20,23 +21,23 @@ export default function ActivityDetail({ activity, onEdit, onDelete, onComplete 
 
       <p className="detail-date">
         <strong>Tanggal Aktivitas:</strong>{' '}
-        {format(new Date(date), 'dd MMMM yyyy', { locale: localeID })}
+        {format(parseISO(date), 'dd MMMM yyyy', { locale: localeID })}
       </p>
 
       <p className="detail-thing">
         <strong>Barang Bawaan:</strong>
       </p>
       <ul>
-        {items.map((it, i) => (
+        {(Array.isArray(items) ? items : []).map((it, i) => (
           <li key={i}>{it}</li>
         ))}
       </ul>
 
       <hr />
-
+      
       <p className="created-at">
         Dibuat pada:{' '}
-        {format(new Date(createdAt), 'dd MMMM yyyy HH:mm', { locale: localeID })}
+        {format(parseISO(created_at), 'dd MMMM yyyy HH:mm', { locale: localeID })}
       </p>
 
       {completed && (

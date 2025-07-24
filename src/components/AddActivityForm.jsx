@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { addActivity } from '../utils/network-data';
 
 export default function AddActivityForm({ onSave, onCancel, initialData }) {
   const [name, setName] = useState('');
@@ -34,6 +35,7 @@ export default function AddActivityForm({ onSave, onCancel, initialData }) {
       description,
       items,
     });
+    console.log("ini tanggalnya",date)
   };
 
   return (
