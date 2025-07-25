@@ -160,13 +160,36 @@ export default function LandingPage({ onEnter }) {
       </section>
 
       <footer className="lp-footer">
-        <div className="footer-links">
-          <a href="#features">Fitur</a>
-          <a href="#about">Tentang</a>
-          <a href="#howto">Cara Pakai</a>
-          <a href="https://github.com/hadijaamrun/stuffnudge-app" target='blank'>Dokumentasi</a>
+        <div className="footer-content">
+          <div className="footer-col">
+            <h3>Tentang</h3>
+            <ul>
+              <li><a href="#about">Tentang StuffNudge</a></li>
+              <li><a href="https://dicoding.com" target="_blank">Dicoding</a></li>
+            </ul>
+          </div>
+
+          <div className="footer-col">
+            <h3>Tech Stack</h3>
+            <ul>
+              <li><a href="https://nodejs.org/" target="_blank">NodeJs</a></li>
+              <li><a href="https://expressjs.com/" target="_blank">ExpressJs</a></li>
+              <li><a href="https://react.dev/" target="_blank">ReactJs</a></li>
+            </ul>
+          </div>
+
+          <div className="footer-col">
+            <h3>Platform</h3>
+            <ul>
+              <li><a href="https://github.com/hadijaamrun/stuffnudge-app" target="_blank">Github</a></li>
+              <li><a href="https://railway.com/" target="_blank">Railway</a></li>
+            </ul>
+          </div>
         </div>
-        <p className="copy-right">&copy; 2025 StuffNudge. Powered by our dreams.</p>
+
+        <div className="footer-bottom">
+          <p>&copy; 2025 StuffNudge. Powered by our dreams.</p>
+        </div>
       </footer>
     </div>
   );
