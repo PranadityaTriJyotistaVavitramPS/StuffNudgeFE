@@ -50,20 +50,15 @@ export default function LandingPage({ onEnter }) {
     return () => observer.disconnect();
   }, []);
 
-  // Fungsi untuk navigasi ke halaman login
   const onDaftar = () => {
     navigate('/register');
   }
 
-  // Fungsi untuk navigasi ke halaman login (untuk tombol Login)
   const onLogin = () => {
     navigate('/register');
   }
 
-  // Fungsi untuk tombol "Mulai Sekarang!" - bisa ke login atau langsung dashboard
   const onMulaiSekarang = () => {
-    // Jika user sudah login, langsung ke dashboard
-    // Jika belum, ke halaman login
     const token = localStorage.getItem('token');
     if (token) {
       navigate('/dashboard');
@@ -91,7 +86,6 @@ export default function LandingPage({ onEnter }) {
       <section className="lp-hero" id="hero">
         <img src={logo} alt="Logo StuffNudge" className="lp-logopict" />
         <h1>Selesaikan Aktivitasmu<br/> dengan Mudah!</h1>
-        {/* Modifikasi tombol hero untuk cek login status */}
         <button className="btn-hero" onClick={onMulaiSekarang}>
           Mulai Sekarang!
         </button>

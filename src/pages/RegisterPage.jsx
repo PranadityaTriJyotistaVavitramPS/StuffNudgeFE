@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { Alert, AlertDescription } from '../components/ui/alert.jsx';
 import { Eye, EyeOff, User, Mail, Lock, CheckCircle } from 'lucide-react';
 import '../styles/RegisterPage.css';
-import loginIllustration from '../assets/logoremove.svg';
+import loginIllustration from '../assets/logotitle.svg';
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -23,7 +23,6 @@ const RegisterPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
 
-  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -31,7 +30,6 @@ const RegisterPage = () => {
       [name]: value
     }));
     
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -40,18 +38,14 @@ const RegisterPage = () => {
     }
   };
 
-  // Validate form
   const validateForm = () => {
     const newErrors = {};
 
-    // Name validation
     if (!formData.name.trim()) {
       newErrors.name = 'Full name is required';
     } else if (formData.name.trim().length < 2) {
       newErrors.name = 'Name must be at least 2 characters';
     }
-
-    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
@@ -59,14 +53,12 @@ const RegisterPage = () => {
       newErrors.email = 'Please enter a valid email';
     }
 
-    // Password validation
     if (!formData.password) {
       newErrors.password = 'Password is required';
     } else if (formData.password.length < 8) {
       newErrors.password = 'Password must be at least 8 characters';
     }
 
-    // Confirm password validation
     if (!formData.confirmPassword) {
       newErrors.confirmPassword = 'Please confirm your password';
     } else if (formData.password !== formData.confirmPassword) {
@@ -77,7 +69,6 @@ const RegisterPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Handle form submission
   const handleRegister = async (e) => {
     e.preventDefault();
     
@@ -89,15 +80,12 @@ const RegisterPage = () => {
     setSuccessMessage('');
 
     try {
-      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Here you would typically make an API call to register the user
       console.log('Registration data:', formData);
       
       setSuccessMessage('Account created successfully! Please login.');
       
-      // Reset form
       setFormData({
         name: '',
         email: '',
@@ -112,18 +100,14 @@ const RegisterPage = () => {
     }
   };
 
-  // Handle Google registration (placeholder)
   const handleGoogleRegister = () => {
     console.log('Google registration clicked');
-    // Implement Google OAuth here
   };
 
   return (
     <div className="register-container-split">
-      {/* Left Side - Brand Section */}
       <div className="brand-section-split">
         <div className="brand-content-split">
-          {/* Illustration using imported SVG like LoginPage */}
           <div className="register-illustration">
             <img 
               src={loginIllustration} 
@@ -132,22 +116,21 @@ const RegisterPage = () => {
             />
           </div>
           
-          {/* Brand Description */}
           <div className="brand-description">
-            <p>Permudah tugasmu dan tingkatkan produktivitas </p>
-            <p>dengan StuffNudge. Mulai sekarang, gratis!</p>
+            <p>Permudah tugas dan tingkatkan produktivitasmu.</p>
+            <br></br>
+            <p>Mulai sekarang, gratis!</p>
           </div>
         </div>
       </div>
 
-      {/* Right Side - Registration Form */}
       <div className="form-section-split">
         <div className="form-container-split">
           <Card className="register-card-split">
             <CardHeader className="register-header-split">
-              <CardTitle className="register-title-split">Create your account</CardTitle>
+              <CardTitle className="register-title-split">Buat Akunmu Sekarang!</CardTitle>
               <CardDescription className="register-subtitle-split">
-                Sign up using the form, or the Google account you use at work
+                atau daftar dengan akun Google mu.
               </CardDescription>
             </CardHeader>
             
@@ -165,7 +148,6 @@ const RegisterPage = () => {
                 </Alert>
               )}
 
-              {/* Google Register Button - Top */}
               <Button 
                 type="button"
                 variant="outline"
@@ -178,11 +160,10 @@ const RegisterPage = () => {
                   <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
                   <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                 </svg>
-                Sign up with Google
+                Masuk dengan Google
               </Button>
 
               <form onSubmit={handleRegister} className="register-form-split">
-                {/* Name Field */}
                 <div className="form-group-split">
                   <Label htmlFor="name" className="form-label-split">Full name</Label>
                   <div className="input-wrapper-split">
@@ -199,7 +180,6 @@ const RegisterPage = () => {
                   {errors.name && <span className="error-text-split">{errors.name}</span>}
                 </div>
 
-                {/* Email Field */}
                 <div className="form-group-split">
                   <Label htmlFor="email" className="form-label-split">Email</Label>
                   <div className="input-wrapper-split">
@@ -216,9 +196,7 @@ const RegisterPage = () => {
                   {errors.email && <span className="error-text-split">{errors.email}</span>}
                 </div>
 
-                {/* Password Fields Row */}
                 <div className="password-row-split">
-                  {/* Password Field */}
                   <div className="form-group-split password-field-split">
                     <Label htmlFor="password" className="form-label-split">Password</Label>
                     <div className="input-wrapper-split password-wrapper-split">
@@ -242,7 +220,6 @@ const RegisterPage = () => {
                     {errors.password && <span className="error-text-split">{errors.password}</span>}
                   </div>
 
-                  {/* Confirm Password Field */}
                   <div className="form-group-split password-field-split">
                     <Label htmlFor="confirmPassword" className="form-label-split">Confirm password</Label>
                     <div className="input-wrapper-split password-wrapper-split">
@@ -267,24 +244,17 @@ const RegisterPage = () => {
                   </div>
                 </div>
 
-                {/* Password Requirements */}
-                <div className="password-requirements-split">
-                  <p>Min 8 characters, including letters, numbers and special characters</p>
-                </div>
-
-                {/* Submit Button */}
                 <Button 
                   type="submit" 
                   className="submit-button-split"
                   disabled={isLoading}
                 >
-                  {isLoading ? 'Creating...' : 'Submit'}
+                  {isLoading ? 'Creating...' : 'Daftar'}
                 </Button>
 
-                {/* Login Link */}
                 <div className="login-link-split">
-                  <span>Already have an account? </span>
-                  <Link to="/login" className="link-split">Sign in here</Link>
+                  <span>Sudah punya Akun? </span>
+                  <Link to="/login" className="link-split">Masuk disini</Link>
                 </div>
               </form>
             </CardContent>

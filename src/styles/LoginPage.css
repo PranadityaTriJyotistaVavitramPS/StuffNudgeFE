@@ -1,126 +1,97 @@
 /* LoginPage.css */
+@import './variables.css';
+
 .login-container {
   display: flex;
   min-height: 100vh;
-  font-family: 'Arial', sans-serif;
+  font-family: var(--font-sans);
 }
 
 .login-background {
-  flex: 1;
-  background: linear-gradient(135deg, var(--brand-bg) 0%, #475569 100%);;
-  position: relative;
+  flex: 0.5;
+  background-color: var(--color-dark-blue);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  padding: 40px;
+  padding: 2rem;
 }
 
-
-/* Styling untuk gambar ilustrasi */
 .login-illustration {
-  position: relative;
-  z-index: 3;
-  margin-bottom: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  margin-bottom: 2rem;
 }
 
 .illustration-image {
-  width: 300px;
-  height: auto;
+  width: 250px;
   max-width: 100%;
-  
-  animation: float 6s ease-in-out infinite;
-}
-
-/* Animasi floating untuk gambar */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
 }
 
 .brand-text {
-  position: relative;
-  z-index: 2;
-  color: white;
   text-align: center;
-  line-height: 1.6;
 }
 
 .brand-text h2 {
-  font-size: 28px;
-  font-weight: bold;
-  margin-bottom: 15px;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
 }
 
 .brand-text p {
-  font-size: 16px;
-  margin-bottom: 8px;
-  opacity: 0.9;
-  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+  font-size: 1rem;
+  color: #ffffff;
+  line-height: 1.4;
+  margin: 0 auto;
 }
 
 .login-form-container {
   flex: 1;
-  background: var(--light-bg);
+  background-color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px;
+  padding: 2rem;
 }
 
 .login-form {
-  background: rgba(255, 255, 255, 0.9);
-  padding: 40px;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 400px;
-  backdrop-filter: blur(10px);
+  max-width: 450px;
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 30px;
 }
 
 .welcome-title {
-  font-size: 32px;
-  font-weight: bold;
-  color: #2C3E50;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--color-dark-blue);
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 1.5rem;
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 1.5rem;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 0.5rem;
   font-weight: 500;
-  color: #0f172a;
-  font-size: 14px;
+  color: var(--color-dark-blue);
+  font-size: 0.875rem;
 }
 
 .form-input {
   width: 100%;
-  padding: 12px 16px;
-  border: 2px solid #E8E8E8;
-  border-radius: 25px;
-  font-size: 16px;
-  background: white;
-  transition: border-color 0.3s ease;
-  box-sizing: border-box;
+  padding: 0.75rem 1rem;
+  border: 2px solid #ddd;
+  border-radius: 15px;
+  font-size: 1rem;
+  background-color: #fff;
+  transition: border-color 0.2s ease;
 }
 
 .form-input:focus {
   outline: none;
-  border-color: #3e4747;
+  border-color: var(--color-light-blue);
 }
 
 .password-input-container {
@@ -128,226 +99,148 @@
 }
 
 .password-input {
-  padding-right: 50px;
+  padding-right: 2.5rem;
 }
 
 .password-toggle {
   position: absolute;
-  right: 15px;
   top: 50%;
+  right: 0.75rem;
   transform: translateY(-50%);
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 18px;
-  padding: 5px;
+  font-size: 1rem;
+  color: #666;
 }
 
 .forgot-password {
   display: block;
   text-align: right;
-  margin-top: 8px;
-  color: #7F8C8D;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: #888;
   text-decoration: none;
-  font-size: 12px;
 }
 
 .forgot-password:hover {
-  color: #4ECDC4;
+  text-decoration: underline;
 }
 
 .login-button {
   width: 100%;
-  padding: 14px;
-  background: #1B3C53;
-  color: white;
+  padding: 0.75rem;
+  background-color: var(--color-light-blue);
+  color: #fff;
   border: none;
-  border-radius: 25px;
-  font-size: 16px;
+  border-radius: 30px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
-  margin-top: 20px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
 .login-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(243, 156, 18, 0.4);
+  background-color: var(--color-dark-blue);
+  transform: translateY(-1px);
 }
 
 .divider {
   text-align: center;
-  margin: 30px 0;
-  position: relative;
-  color: #7F8C8D;
-  font-size: 14px;
+  margin: 2rem 0;
+  font-size: 0.875rem;
+  color: #aaa;
 }
 
 .divider::before {
   content: '';
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
+  display: block;
   height: 1px;
-  background: #E8E8E8;
-  z-index: 1;
-}
-
-.divider span {
-  background: none;
-  padding: 0 20px;
-  position: relative;
-  z-index: 2;
+  background: #eee;
+  margin-bottom: 0.75rem;
 }
 
 .google-login-button {
-  width: 0px;
-  height: 0px;
-  border-radius: 50%;
-  background: none;
-  border: 2px solid #E8E8E8;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-dark-blue);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .google-login-button:hover {
-  border-color: #4285F4;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(66, 133, 244, 0.2);
+  background-color: #f7f7f7;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .google-icon {
-  font-size: 24px;
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
 }
 
-/* Responsive Design */
+.register-prompt {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: #555;
+}
+
+.register-prompt .register-link {
+  color: var(--color-dark-blue);
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 0.25rem;
+}
+
+.register-prompt .register-link:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 768px) {
   .login-container {
     flex-direction: column;
   }
-  
-  .login-background {
-    min-height: 300px;
-    flex: none;
-    padding: 20px;
+
+  .login-background,
+  .login-form-container {
+    padding: 1.5rem;
   }
-  
+
   .illustration-image {
     width: 200px;
   }
-  
-  .brand-text {
-    text-align: center;
-    margin: 20px 0;
-  }
-  
-  .brand-text h2 {
-    font-size: 24px;
-  }
-  
-  .brand-text p {
-    font-size: 14px;
-  }
-  
-  .login-form-container {
-    flex: 1;
-    padding: 20px;
-  }
-  
-  .login-form {
-    padding: 30px 20px;
-  }
-  
+
   .welcome-title {
-    font-size: 28px;
+    font-size: 1.75rem;
   }
 }
 
 @media (max-width: 480px) {
   .login-background {
-    min-height: 250px;
-    padding: 15px;
+    padding: 1rem;
   }
-  
+
   .illustration-image {
     width: 150px;
   }
-  
-  .brand-text h2 {
-    font-size: 20px;
-  }
-  
-  .brand-text p {
-    font-size: 12px;
-  }
-  
+
   .login-form {
-    padding: 20px 15px;
+    padding: 1.5rem;
   }
-  
-  .welcome-title {
-    font-size: 24px;
-  }
-  
-  .form-input {
-    padding: 10px 14px;
-    font-size: 14px;
-  }
-  
+
   .login-button {
-    padding: 12px;
-    font-size: 14px;
+    padding: 0.75rem;
+    font-size: 0.875rem;
   }
 }
-
-/* Animasi masuk untuk elemen */
-.login-illustration {
-  animation: slideInFromTop 0.8s ease-out;
-}
-
-.brand-text {
-  animation: slideInFromBottom 0.8s ease-out 0.2s both;
-}
-
-.login-form {
-  animation: slideInFromRight 0.8s ease-out 0.4s both;
-}
-
-@keyframes slideInFromTop {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideInFromBottom {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideInFromRight {
-  from {
-    opacity: 0;
-    transform: translateX(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
