@@ -50,10 +50,28 @@ export default function LandingPage({ onEnter }) {
     return () => observer.disconnect();
   }, []);
 
-  const onDaftar = ()=>{
-    putAccessToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF91c2VyIjoiZjRkYjFmMzEtNzBkYy00Y2U5LWJlMjktNWQ5NjhjNmMyMjJlIiwiaWF0IjoxNzUyNTkzMjI3fQ.ZwSeIZ6y1K_u4sTYhZZ9op3SwDI3idxKDIITUOZGtKk");
-    navigate('/dashboard') 
+  // Fungsi untuk navigasi ke halaman login
+  const onDaftar = () => {
+    navigate('/register');
   }
+
+  // Fungsi untuk navigasi ke halaman login (untuk tombol Login)
+  const onLogin = () => {
+    navigate('/register');
+  }
+
+  // Fungsi untuk tombol "Mulai Sekarang!" - bisa ke login atau langsung dashboard
+  const onMulaiSekarang = () => {
+    // Jika user sudah login, langsung ke dashboard
+    // Jika belum, ke halaman login
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigate('/dashboard');
+    } else {
+      navigate('/register');
+    }
+  }
+
   return (
     <div className="lp-container">
       <header className="lp-header">
@@ -63,7 +81,7 @@ export default function LandingPage({ onEnter }) {
         <nav className="lp-nav">
           <a href="#features">Fitur</a>
           <a href="#about">Tentang</a>
-          <a href="#howto">Cara Pakai</a>
+          <a href="#howto">Cara Pakai</a>        
           <button className="btn-cta" onClick={onDaftar}>
             Daftar
           </button>
@@ -73,7 +91,8 @@ export default function LandingPage({ onEnter }) {
       <section className="lp-hero" id="hero">
         <img src={logo} alt="Logo StuffNudge" className="lp-logopict" />
         <h1>Selesaikan Aktivitasmu<br/> dengan Mudah!</h1>
-        <button className="btn-hero" onClick={onEnter}>
+        {/* Modifikasi tombol hero untuk cek login status */}
+        <button className="btn-hero" onClick={onMulaiSekarang}>
           Mulai Sekarang!
         </button>
       </section>
@@ -194,3 +213,4 @@ export default function LandingPage({ onEnter }) {
     </div>
   );
 }
+
