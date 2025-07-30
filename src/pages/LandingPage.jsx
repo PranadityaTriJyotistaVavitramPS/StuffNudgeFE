@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import '../styles/LandingPage.css';
 import logo from '../assets/logos.svg';
+import drawer from '../assets/drawer.svg'
 import {
   FiClock,
   FiCheckCircle,
@@ -102,7 +103,7 @@ export default function LandingPage({ onEnter }) {
             </p>
           </div>
           <div className="about-image">
-            <img src="/src/assets/drawer.svg" alt="Ilustrasi StuffNudge" />
+            <img src={drawer} alt="Ilustrasi StuffNudge" />
           </div>
         </div>
       </section>
