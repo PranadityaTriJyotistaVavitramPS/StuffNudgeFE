@@ -49,6 +49,7 @@ export default function Dashboard() {
       console.log("Ini hasilnya",result.data[0])
       setActivities(formatted);
     } else {
+      console.log(" ini resultnya di getActivites dashboard", result)
       alert("Gagal memuat aktivitas dari server.");
     }
   };

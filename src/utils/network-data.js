@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:5000/api/v1';
+const BASE_URL = 'https://stuffnudgebe-production.up.railway.app/api/v1';
 
 function getAccessToken() {
   return localStorage.getItem('accessToken');
@@ -18,8 +18,28 @@ async function fetchWithToken(url, options = {}) {
   });
 }
 
-async function login({ username, email, password }) {
-  const response = await fetch(`${BASE_URL}/users/userAuth`, {
+async function login({ username, password }) {
+  const response = await fetch(`${BASE_URL}/users/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ username, password }),
+  });
+
+  const responseJson = await response.json();
+  console.log("ini responsenya dari utlis/login", responseJson)
+
+  if (responseJson.message !== 'success') {
+    alert(responseJson.message);
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
+async function register({ username, email, password }) {
+  const response = await fetch(`${BASE_URL}/users/register`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -29,27 +49,7 @@ async function login({ username, email, password }) {
 
   const responseJson = await response.json();
 
-  if (responseJson.status !== 'success') {
-    alert(responseJson.message);
-    return { error: true, data: null };
-  }
-
-  return { error: false, data: responseJson.data };
-}
-
-async function register({ name, email, password }) {
-  const response = await fetch(`${BASE_URL}/register`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ name, email, password }),
-  });
-
-  const responseJson = await response.json();
-
-  if (responseJson.status !== 'success') {
-    alert(responseJson.message);
+  if (responseJson.message !== 'success') {
     return { error: true };
   }
 

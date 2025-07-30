@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { Button } from '../components/ui/button.jsx';
 import { Input } from '../components/ui/input.jsx';
 import { Label } from '../components/ui/label.jsx';
@@ -8,15 +8,19 @@ import { Alert, AlertDescription } from '../components/ui/alert.jsx';
 import { Eye, EyeOff, User, Mail, Lock, CheckCircle } from 'lucide-react';
 import '../styles/RegisterPage.css';
 import loginIllustration from '../assets/logotitle.svg';
+import { register } from '../utils/network-data'; 
+import { useNavigate } from 'react-router-dom';
+
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
-    name: '',
+    username: '',
     email: '',
     password: '',
     confirmPassword: ''
   });
 
+  const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -41,10 +45,10 @@ const RegisterPage = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.name.trim()) {
-      newErrors.name = 'Full name is required';
-    } else if (formData.name.trim().length < 2) {
-      newErrors.name = 'Name must be at least 2 characters';
+    if (!formData.username.trim()) {
+      newErrors.username = 'Full name is required';
+    } else if (formData.username.trim().length < 2) {
+      newErrors.username = 'Name must be at least 2 characters';
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email.trim()) {
@@ -78,25 +82,31 @@ const RegisterPage = () => {
 
     setIsLoading(true);
     setSuccessMessage('');
+    setErrors({})
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      console.log('Registration data:', formData);
-      
-      setSuccessMessage('Account created successfully! Please login.');
-      
-      setFormData({
-        name: '',
-        email: '',
-        password: '',
-        confirmPassword: ''
+      const { error } = await register({
+        username: formData.username,
+        email: formData.email,
+        password: formData.password
       });
       
+      if(!error){
+        setSuccessMessage('Account created successfully! Please login.');
+        setFormData({
+          username: '',
+          email: '',
+          password: '',
+          confirmPassword: ''
+        });
+        console.log('Navigating to /login...');
+        
+      }
     } catch (error) {
       setErrors({ general: 'Something went wrong. Please try again.' });
     } finally {
       setIsLoading(false);
+      navigate('/login')
     }
   };
 
@@ -129,9 +139,9 @@ const RegisterPage = () => {
           <Card className="register-card-split">
             <CardHeader className="register-header-split">
               <CardTitle className="register-title-split">Buat Akunmu Sekarang!</CardTitle>
-              <CardDescription className="register-subtitle-split">
+              {/* <CardDescription className="register-subtitle-split">
                 atau daftar dengan akun Google mu.
-              </CardDescription>
+              </CardDescription> */}
             </CardHeader>
             
             <CardContent className="register-content-split">
@@ -148,7 +158,7 @@ const RegisterPage = () => {
                 </Alert>
               )}
 
-              <Button 
+              {/* <Button 
                 type="button"
                 variant="outline"
                 className="google-button-split"
@@ -161,7 +171,7 @@ const RegisterPage = () => {
                   <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                 </svg>
                 Masuk dengan Google
-              </Button>
+              </Button> */}
 
               <form onSubmit={handleRegister} className="register-form-split">
                 <div className="form-group-split">
@@ -169,15 +179,15 @@ const RegisterPage = () => {
                   <div className="input-wrapper-split">
                     <Input
                       id="name"
-                      name="name"
+                      name="username"
                       type="text"
                       placeholder=""
-                      value={formData.name}
+                      value={formData.username}
                       onChange={handleInputChange}
-                      className={`input-split ${errors.name ? 'error' : ''}`}
+                      className={`input-split ${errors.username ? 'error' : ''}`}
                     />
                   </div>
-                  {errors.name && <span className="error-text-split">{errors.name}</span>}
+                  {errors.username && <span className="error-text-split">{errors.username}</span>}
                 </div>
 
                 <div className="form-group-split">
