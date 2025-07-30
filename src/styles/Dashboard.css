@@ -782,3 +782,8 @@ body {
   background: var(--color-dark-blue);
   transform: translateY(-1px);
 }
+
+.profile-form .log-out{
+  background-color: red;
+
+}
