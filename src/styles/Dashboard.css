@@ -785,5 +785,9 @@ body {
 
 .profile-form .log-out{
   background-color: red;
+}
+
+.profile-form .log-out:hover{
+  background-color: rgb(175, 16, 16);
 
 }
