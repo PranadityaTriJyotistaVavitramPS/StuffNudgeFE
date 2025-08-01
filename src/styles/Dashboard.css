@@ -212,9 +212,9 @@ body {
 
 .btn-add-floating {
   --size: 3rem;
-  position: fixed;
+  position: absolute;
   top: 4rem;
-  left: 30rem;
+  left: 15rem;
   width: var(--size);
   height: var(--size);
   background: var(--color-light-blue);

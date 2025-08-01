@@ -175,7 +175,7 @@ const RegisterPage = () => {
 
               <form onSubmit={handleRegister} className="register-form-split">
                 <div className="form-group-split">
-                  <Label htmlFor="name" className="form-label-split">Full name</Label>
+                  <Label htmlFor="name" className="form-label-split">Username</Label>
                   <div className="input-wrapper-split">
                     <Input
                       id="name"
