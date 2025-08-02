@@ -197,6 +197,7 @@ export default function LandingPage({ onEnter }) {
             <ul>
               <li><a href="https://github.com/hadijaamrun/stuffnudge-app" target="_blank">Github</a></li>
               <li><a href="https://railway.com/" target="_blank">Railway</a></li>
+              <li><a href="https://vercel.com/" target="_blank">Vercel</a></li>
             </ul>
           </div>
         </div>

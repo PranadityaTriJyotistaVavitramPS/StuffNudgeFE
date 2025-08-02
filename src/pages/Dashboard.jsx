@@ -1,5 +1,14 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { getAccessToken, getUserLogged,updateUser,addActivity,getAllActivity,deleteActivity,updateActivity } from '../utils/network-data';
+import ClipLoader from 'react-spinners/ClipLoader';
+import {
+  getAccessToken,
+  getUserLogged,
+  updateUser,
+  addActivity,
+  getAllActivity,
+  deleteActivity,
+  updateActivity
+} from '../utils/network-data';
 import { format } from 'date-fns';
 import { FiPlus } from 'react-icons/fi';
 import Navbar from '../components/Navbar';
@@ -18,51 +27,46 @@ export default function Dashboard() {
   const [filterDate, setFilter] = useState(null);
   const [showModal, setModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-
   const [user, setUser] = useState(null);
-  console.log(user)
 
-  const whoIsLogged = async () => {
-    const token = getAccessToken();
-    if (token) {
-      const userData = await getUserLogged();
-      if (userData.error) {
-        console.error("Failed to fetch user data:", userData.message);
-      } else {
-        setUser(userData.data);
-      }
-    }
-  }
-
-  const getActivities = async () => {
-    const result = await getAllActivity();
-    if (!result.error) {
-      const formatted = result.data.map(item => ({
-        ...item,
-        id: item.id_activity,
-        name: item.activity_name,
-        date: item.activity_date,
-        item: item.items,
-        completed: false 
-      }));
-      
-      console.log("Ini hasilnya",result.data[0])
-      setActivities(formatted);
-    } else {
-      console.log(" ini resultnya di getActivites dashboard", result)
-      alert("Gagal memuat aktivitas dari server.");
-    }
-  };
-
-  useEffect(() => {
-    whoIsLogged();
-    getActivities()
-  }, []);
+  const [loading, setLoading] = useState(true);
 
   const [timerInputHours, setTimerInputHours] = useState(0);
   const [timerInputMinutes, setTimerInputMinutes] = useState(0);
   const [timerSecondsLeft, setTimerSecondsLeft] = useState(0);
   const [timerRunning, setTimerRunning] = useState(false);
+
+  const whoIsLogged = useCallback(async () => {
+    const token = getAccessToken();
+    if (!token) return;
+    const userData = await getUserLogged();
+    if (!userData.error) setUser(userData.data);
+  }, []);
+
+  const getActivities = useCallback(async () => {
+    const result = await getAllActivity();
+    if (!result.error) {
+      const formatted = result.data.map(item => ({
+        id: item.id_activity,
+        name: item.activity_name,
+        date: item.activity_date,
+        description: item.description,
+        items: item.items,
+        createdAt: item.createdAt,
+        completed: item.completed
+      }));
+      setActivities(formatted);
+    }
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      await whoIsLogged();
+      await getActivities();
+      setLoading(false);
+    })();
+  }, [whoIsLogged, getActivities]);
 
   useEffect(() => {
     let interval;
@@ -80,8 +84,6 @@ export default function Dashboard() {
     }
     return () => clearInterval(interval);
   }, [timerRunning]);
-
-
 
   const handleTimerStart = () => {
     const total = timerInputHours * 3600 + timerInputMinutes * 60;
@@ -108,56 +110,39 @@ export default function Dashboard() {
     setFilter(v === 'history' ? todayKey : null);
     setSearchQuery('');
   }, []);
+  const handleSearch = q => setSearchQuery(q.toLowerCase().trim());
 
-  const handleSearch = q => {
-    setSearchQuery(q.toLowerCase().trim());
-  };
-
-  const handleSave = async (act) => {
+  const handleSave = async act => {
+    setLoading(true);
     if (editAct) {
-      const result = await updateActivity({
-        id_activity:editAct.id,
-        createdAt: editAct.createdAt,
-        completed: editAct.completed,
-        description: act.description,
-        items: act.items,
-        activity_date: act.date,
-        activity_name: act.name
-      });
-      console.log("ini resultnya pas ngupdate", result);
-
-      if( result.error ){
-        alert('gagal lagi gagal lagi, capek bang udah rill');
-        return;
-      }
-
-      await getActivities();
-      setSelected(null); 
-    } else {
-      const result = await addActivity({
+      await updateActivity({
+        id_activity: editAct.id,
         activity_name: act.name,
         activity_date: act.date,
-        description:act.description,
-        items: act.items,
+        description: act.description,
+        items: act.items
       });
-
-      if (result.error) {
-        alert('Gagal menyimpan aktivitas ke server.');
-        return;
-      }
-      await getActivities()
+      setSelected(null);
+    } else {
+      await addActivity({
+        activity_name: act.name,
+        activity_date: act.date,
+        description: act.description,
+        items: act.items
+      });
     }
-
+    await getActivities();
     setEditAct(null);
     setModal(false);
+    setLoading(false);
   };
 
-
-  const handleDelete = async(id) => {
-    await deleteActivity(id)
-    await getActivities()
+  const handleDelete = async id => {
+    setLoading(true);
+    await deleteActivity(id);
+    await getActivities();
     setSelected(null);
-    setEditAct(null);
+    setLoading(false);
   };
 
   const handleEdit = act => {
@@ -181,39 +166,32 @@ export default function Dashboard() {
   };
 
   const handleProfileSave = async ({ username, email }) => {
-    const result = await updateUser({ username, email });
-
-    if (result.error) {
-      alert('Gagal mengupdate profil.');
-    } else {
-      await whoIsLogged();
-      alert('Profil berhasil disimpan.');
-    }
+    setLoading(true);
+    await updateUser({ username, email });
+    await whoIsLogged();
+    setLoading(false);
+    alert('Profil berhasil disimpan.');
   };
-
 
   const filterByQuery = list =>
     list.filter(a => a.name.toLowerCase().includes(searchQuery));
 
   const activeActs = activities.filter(a => !a.completed);
-    
-  const visibleMainActs = searchQuery
-    ? filterByQuery(activeActs)
-    : activeActs;
-
+  const visibleMainActs = searchQuery ? filterByQuery(activeActs) : activeActs;
   const shownActs = activities.filter(a => a.date === filterDate);
-  const calendarResults = searchQuery
-    ? filterByQuery(activities)
-    : shownActs;
-
+  const calendarResults = searchQuery ? filterByQuery(activities) : shownActs;
   const todayKey = format(new Date(), 'yyyy-MM-dd');
   const rawToday = activities.filter(a => a.date === todayKey && !a.completed);
-  const todayActs = searchQuery
-    ? filterByQuery(rawToday)
-    : rawToday;
+  const todayActs = searchQuery ? filterByQuery(rawToday) : rawToday;
 
   return (
     <div className={`dashboard-container${selected ? ' with-detail' : ''}`}>
+      {loading && (
+        <div className="spinner-overlay">
+          <ClipLoader size={60} color="#578FCA" />
+        </div>
+      )}
+
       <Navbar onSelect={handleNav} currentView={view} onSearch={handleSearch} />
 
       <main className="main">
@@ -255,9 +233,7 @@ export default function Dashboard() {
               <ActivityList activities={calendarResults} onSelect={act => setSelected(act)} />
             ) : (
               <p className="no-activity">
-                {searchQuery
-                  ? 'Aktivitas tidak ditemukan.'
-                  : 'Tidak ada aktivitas pada tanggal ini.'}
+                {searchQuery ? 'Aktivitas tidak ditemukan.' : 'Tidak ada aktivitas pada tanggal ini.'}
               </p>
             )}
           </>
@@ -281,9 +257,7 @@ export default function Dashboard() {
               <ActivityList activities={todayActs} onSelect={act => setSelected(act)} />
             ) : (
               <p className="no-activity">
-                {searchQuery
-                  ? 'Aktivitas tidak ditemukan.'
-                  : 'Belum ada aktivitas untuk hari ini.'}
+                {searchQuery ? 'Aktivitas tidak ditemukan.' : 'Belum ada aktivitas untuk hari ini.'}
               </p>
             )}
           </>

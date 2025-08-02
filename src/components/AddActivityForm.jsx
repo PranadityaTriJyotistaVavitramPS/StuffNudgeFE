@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { addActivity } from '../utils/network-data';
 
 export default function AddActivityForm({ onSave, onCancel, initialData }) {
   const [name, setName] = useState('');
   const [date, setDate] = useState('');
   const [description, setDescription] = useState('');
   const [itemsInput, setItemsInput] = useState('');
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (initialData) {
@@ -21,21 +21,27 @@ export default function AddActivityForm({ onSave, onCancel, initialData }) {
     }
   }, [initialData]);
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    if (!name || !date) return;
+    if (!name.trim() || !date) return;
+
     const items = itemsInput
       .split(',')
       .map(s => s.trim())
       .filter(s => s);
-    onSave({
-      id: initialData?.id || Date.now(),
-      name,
-      date,
-      description,
-      items,
-    });
-    console.log("ini tanggalnya",date)
+
+    setSaving(true);
+    try {
+      await onSave({
+        id: initialData?.id || Date.now(),
+        name: name.trim(),
+        date,
+        description: description.trim(),
+        items,
+      });
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -48,6 +54,7 @@ export default function AddActivityForm({ onSave, onCancel, initialData }) {
         value={name}
         onChange={e => setName(e.target.value)}
         required
+        disabled={saving}
       />
 
       <label>Tanggal</label>
@@ -56,6 +63,7 @@ export default function AddActivityForm({ onSave, onCancel, initialData }) {
         value={date}
         onChange={e => setDate(e.target.value)}
         required
+        disabled={saving}
       />
 
       <label>Deskripsi</label>
@@ -65,6 +73,7 @@ export default function AddActivityForm({ onSave, onCancel, initialData }) {
         placeholder="Deskripsi singkat..."
         rows={3}
         style={{ resize: 'vertical', maxHeight: '150px' }}
+        disabled={saving}
       />
 
       <label>Barang Bawaan (pisahkan dengan koma)</label>
@@ -73,14 +82,30 @@ export default function AddActivityForm({ onSave, onCancel, initialData }) {
         value={itemsInput}
         onChange={e => setItemsInput(e.target.value)}
         placeholder="Contoh: Dompet, earphone, tumbler..."
+        disabled={saving}
       />
 
       <div className="modal-form-actions">
-        <button type="button" className="btn-cancel" onClick={onCancel}>
+        <button
+          type="button"
+          className="btn-cancel"
+          onClick={onCancel}
+          disabled={saving}
+        >
           Batal
         </button>
-        <button type="submit" className="btn-save">
-          {initialData ? 'Update' : 'Tambah'}
+        <button
+          type="submit"
+          className="btn-save"
+          disabled={saving}
+        >
+          {saving
+            ? initialData
+              ? 'Menyimpan...'
+              : 'Menambahkan...'
+            : initialData
+            ? 'Update'
+            : 'Tambah'}
         </button>
       </div>
     </form>
