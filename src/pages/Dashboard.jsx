@@ -52,7 +52,7 @@ export default function Dashboard() {
         date: item.activity_date,
         description: item.description,
         items: item.items,
-        createdAt: item.createdAt,
+        created_at: item.created_at,
         completed: item.completed
       }));
       setActivities(formatted);

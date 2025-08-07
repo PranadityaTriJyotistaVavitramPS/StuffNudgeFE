@@ -7,8 +7,9 @@ export default function ActivityDetail({ activity, onEdit, onDelete, onComplete 
   if (!activity) return null;
 
   const { id, name, description, date, items, created_at, completed } = activity;
-  console.log('Activity detail:', activity);
 
+  console.log("Tanggal  yang diterima:", date);
+  console.log("ini itemnya", items)
   return (
     <div className="detail-panel-content">
       <h2>{name}</h2>
@@ -37,6 +38,7 @@ export default function ActivityDetail({ activity, onEdit, onDelete, onComplete 
       
       <p className="created-at">
         Dibuat pada:{' '}
+        {console.log("created_at", created_at)}
         {format(parseISO(created_at), 'dd MMMM yyyy HH:mm', { locale: localeID })}
       </p>
 

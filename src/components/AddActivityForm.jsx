@@ -25,8 +25,7 @@ export default function AddActivityForm({ onSave, onCancel, initialData }) {
     e.preventDefault();
     if (!name.trim() || !date) return;
 
-    const items = itemsInput
-      .split(',')
+    const items = itemsInput?.split(',')
       .map(s => s.trim())
       .filter(s => s);
 
